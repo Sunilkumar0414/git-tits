@@ -1,0 +1,1 @@
+hi there this is my new class for git & git hub so it is used for example1.txt for the new sending options for the working directory.
