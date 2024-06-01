@@ -1,2 +1,47 @@
 hi there this is my new class for git & git hub so it is used for example1.txt for the new sending options for the working directory.
 After a long time i am using the github for reverse the practice we are doing it in an different way with a perfect dedication for thelearning sections
+resource "github_repository" "example" {
+  name        = "my-awesome-repo"
+  description = "This is my GitHub repository"
+  visibility  = "private"
+  auto_init   = true
+}
+jenkins pipeline
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
+        // Add more stages as needed
+    }
+}
+If we need to check out a specific branch and use credentials (e.g., SSH key or username/password), we can customize the git step:
+pipeline {
+    agent any
+    environment {
+        GIT_CREDENTIALS = credentials('your-git-credentials-id')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'feature/my-feature-branch', credentialsId: env.GIT_CREDENTIALS, url: 'https://github.com/your-username/your-repo.git'
+            }
+        }
+        // Add more stages as needed
+    }
+}
+If we want to disable changelog generation during checkout, use the checkout step:
+pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: 'feature/my-feature-branch']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'DisableChangelog']], userRemoteConfigs: [[url: 'https://github.com/your-username/your-repo.git']]])
+            }
+        }
+        // Add more stages as needed
+    }
+}
